@@ -1,11 +1,11 @@
 services:
-  # Backend - Spring Boot API
+  # Backend - Spring Boot API (using Docker)
   - type: web
     name: safnect-backend
-    runtime: java
+    runtime: docker
     plan: free
-    buildCommand: cd backend && ./mvnw clean package -DskipTests
-    startCommand: cd backend && java -jar target/*.jar
+    dockerfilePath: ./backend/Dockerfile
+    dockerContext: ./backend
     healthCheckPath: /api/health
     envVars:
       - key: DATABASE_URL
