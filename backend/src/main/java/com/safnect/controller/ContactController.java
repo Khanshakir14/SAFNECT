@@ -11,7 +11,6 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/api")
-@CrossOrigin(origins = "http://localhost:5173")
 public class ContactController {
 
     @Autowired
@@ -20,12 +19,12 @@ public class ContactController {
     @PostMapping("/contact")
     public ResponseEntity<Map<String, Object>> submitContactForm(@RequestBody ContactForm contactForm) {
         ContactForm saved = contactFormRepository.save(contactForm);
-        
+
         Map<String, Object> response = new HashMap<>();
         response.put("success", true);
         response.put("message", "Thank you for contacting us! We will get back to you soon.");
         response.put("id", saved.getId());
-        
+
         return ResponseEntity.ok(response);
     }
 

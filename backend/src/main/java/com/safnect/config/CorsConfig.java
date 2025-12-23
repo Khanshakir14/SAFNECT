@@ -16,7 +16,8 @@ public class CorsConfig {
         CorsConfiguration corsConfiguration = new CorsConfiguration();
         corsConfiguration.setAllowCredentials(true);
         corsConfiguration.setAllowedOriginPatterns(
-                Arrays.asList("http://localhost:*", "https://*.vercel.app", "https://*.railway.app"));
+                Arrays.asList("http://localhost:*", "https://*.vercel.app", "https://*.railway.app",
+                        "https://*.onrender.com"));
         corsConfiguration.setAllowedHeaders(Arrays.asList("Origin", "Content-Type", "Accept", "Authorization"));
         corsConfiguration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
 

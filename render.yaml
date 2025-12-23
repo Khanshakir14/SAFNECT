@@ -1,0 +1,45 @@
+services:
+  # Backend - Spring Boot API
+  - type: web
+    name: safnect-backend
+    runtime: java
+    plan: free
+    buildCommand: cd backend && ./mvnw clean package -DskipTests
+    startCommand: cd backend && java -jar target/*.jar
+    healthCheckPath: /api/health
+    envVars:
+      - key: DATABASE_URL
+        fromDatabase:
+          name: safnect-db
+          property: connectionString
+      - key: DATABASE_USERNAME
+        fromDatabase:
+          name: safnect-db
+          property: user
+      - key: DATABASE_PASSWORD
+        fromDatabase:
+          name: safnect-db
+          property: password
+      - key: PORT
+        value: 8080
+
+  # Frontend - React Static Site
+  - type: web
+    name: safnect-frontend
+    runtime: static
+    plan: free
+    buildCommand: cd frontend && npm install && npm run build
+    staticPublishPath: frontend/dist
+    routes:
+      - type: rewrite
+        source: /*
+        destination: /index.html
+    envVars:
+      - key: VITE_API_URL
+        value: https://safnect-backend.onrender.com/api
+
+databases:
+  - name: safnect-db
+    databaseName: safnectdb
+    user: safnect_user
+    plan: free
