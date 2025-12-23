@@ -3,7 +3,6 @@ services:
   - type: web
     name: safnect-backend
     runtime: docker
-    plan: free
     dockerfilePath: ./backend/Dockerfile
     dockerContext: ./backend
     healthCheckPath: /api/health
@@ -27,7 +26,6 @@ services:
   - type: web
     name: safnect-frontend
     runtime: static
-    plan: free
     buildCommand: cd frontend && npm install && npm run build
     staticPublishPath: frontend/dist
     routes:
@@ -42,4 +40,3 @@ databases:
   - name: safnect-db
     databaseName: safnectdb
     user: safnect_user
-    plan: free
