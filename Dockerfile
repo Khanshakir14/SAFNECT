@@ -1,17 +1,22 @@
-# Build stage
-FROM maven:3.9-eclipse-temurin-21 AS build
+# Single stage build for Koyeb (simpler, more compatible)
+FROM maven:3.9-eclipse-temurin-21 AS builder
+
 WORKDIR /app
+
+# Copy backend files
 COPY backend/pom.xml ./pom.xml
 COPY backend/src ./src
-RUN mvn clean package -DskipTests
 
-# Runtime stage
+# Build the application
+RUN mvn clean package -DskipTests -B
+
+# Runtime
 FROM eclipse-temurin:21-jre
-WORKDIR /app
-COPY --from=build /app/target/*.jar app.jar
 
-# Expose port
+WORKDIR /app
+COPY --from=builder /app/target/*.jar app.jar
+
 EXPOSE 8080
 
-# Run the application
-ENTRYPOINT ["java", "-jar", "app.jar"]
+# Memory-optimized for free tier
+ENTRYPOINT ["java", "-Xmx256m", "-Xms128m", "-jar", "app.jar"]
